@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سوة — لوحة الهوية البصرية</title>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=El+Messiri:wght@400;600;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04120E;--bg2:#07201A;--emerald:#0F5B4A;
+  --gold:#C9A24A;--gold-light:#EFD79A;--gold-glow:rgba(201,162,74,.35);
+  --cream:#F6EFE2;--ink-dim:#A9B5AF;--line:rgba(201,162,74,.22);
+  --r1:14px;--r2:22px;--r3:30px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--cream);font-family:Tajawal,sans-serif;
+  padding:44px 40px 72px;line-height:1.7;
+  background-image:
+    radial-gradient(900px 500px at 85% -5%,rgba(15,91,74,.42),transparent 65%),
+    radial-gradient(700px 420px at 8% 30%,rgba(201,162,74,.09),transparent 60%);
+}
+.wrap{max-width:1120px;margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:36px}
+.brand{display:flex;align-items:center;gap:14px}
+.mark{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;font-size:22px;
+  background:linear-gradient(135deg,var(--emerald),#06251d);border:1px solid rgba(239,215,154,.35);
+  box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12)}
+.brand b{font-family:'Aref Ruqaa',serif;font-size:25px;color:var(--gold-light);display:block;line-height:1.25}
+.brand span{font-size:11.5px;color:var(--ink-dim);letter-spacing:.12em}
+.tag{font-size:12px;color:var(--ink-dim);border:1px solid var(--line);border-radius:999px;padding:7px 16px}
+
+h2{font-family:'Aref Ruqaa',serif;font-size:25px;color:var(--gold-light);margin:0 0 3px;font-weight:700}
+.sub{color:var(--ink-dim);font-size:13.5px;margin-bottom:18px}
+section{margin-bottom:44px}
+
+/* hero */
+.hero{border:1px solid var(--line);border-radius:var(--r3);padding:52px 36px 46px;text-align:center;
+  background:radial-gradient(700px 300px at 50% 0%,rgba(15,91,74,.55),transparent 72%),#061713;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);margin-bottom:52px}
+.pill{display:inline-block;font-size:12px;color:var(--gold-light);border:1px solid rgba(201,162,74,.4);
+  background:rgba(201,162,74,.08);border-radius:999px;padding:6px 18px;margin-bottom:20px;letter-spacing:.04em}
+.hero h1{font-family:'Aref Ruqaa',serif;font-size:clamp(38px,5vw,60px);color:var(--gold-light);line-height:1.2;margin-bottom:12px}
+.hero p{color:var(--ink-dim);font-size:16px;max-width:520px;margin:0 auto 26px}
+
+/* palette */
+.pal{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}
+.sw{border-radius:var(--r1);overflow:hidden;border:1px solid rgba(255,255,255,.07);background:#0a1210}
+.sw i{display:block;height:70px}
+.sw b{display:block;font-size:11.5px;font-weight:500;padding:8px 10px 2px}
+.sw span{display:block;font-size:10.5px;color:var(--ink-dim);padding:0 10px 8px;direction:ltr;text-align:right;font-family:ui-monospace,monospace}
+
+/* type */
+.type{display:grid;gap:0}
+.spec{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center;
+  padding:15px 0;border-top:1px solid rgba(255,255,255,.055)}
+.spec:first-child{border-top:0;padding-top:0}
+.lbl{font-size:11.5px;color:var(--ink-dim);letter-spacing:.03em;line-height:1.6}
+.h1{font-family:'Aref Ruqaa',serif;font-size:46px;color:var(--gold-light);line-height:1.25}
+.h2{font-family:'Aref Ruqaa',serif;font-size:31px;color:var(--cream);line-height:1.3}
+.h3{font-family:'El Messiri',serif;font-size:21px;color:var(--cream);font-weight:600}
+.body{font-size:16.5px;color:var(--cream)}
+.dim{font-size:14.5px;color:var(--ink-dim)}
+.cap{font-size:12px;letter-spacing:.1em;color:var(--gold);font-weight:700}
+
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.btn{font-family:inherit;font-size:15.5px;font-weight:700;border-radius:999px;padding:15px 38px;cursor:pointer;
+  border:1px solid transparent;transition:transform .25s,box-shadow .25s,background .25s}
+.btn-p{background:linear-gradient(135deg,var(--gold-light),var(--gold));color:#1A1206;
+  box-shadow:0 12px 34px rgba(201,162,74,.22),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-g{background:rgba(255,255,255,.045);color:var(--cream);border-color:var(--line);font-weight:500}
+
+/* card */
+.card{width:330px;background:#0B1613;border:1px solid var(--line);border-radius:var(--r3);overflow:hidden;
+  box-shadow:0 22px 60px rgba(0,0,0,.55)}
+.thumb{height:160px;position:relative;background:
+  radial-gradient(120px 90px at 50% 55%,rgba(239,215,154,.35),transparent 70%),
+  linear-gradient(150deg,#0b3b31,#04120e 70%)}
+.thumb i{position:absolute;inset:0;background-image:radial-gradient(rgba(239,215,154,.16) 1px,transparent 1px);background-size:14px 14px;opacity:.5}
+.badge{position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;color:#1A1206;background:var(--gold-light);border-radius:999px;padding:4px 12px}
+.cbody{padding:18px 20px 20px}
+.cbody h3{font-family:'El Messiri',serif;font-size:19px;font-weight:600;margin-bottom:5px}
+.cbody p{font-size:13.5px;color:var(--ink-dim);margin-bottom:14px}
+.lnk{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--gold-light);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
+.note{font-size:12.5px;color:var(--ink-dim);border-inline-start:2px solid var(--gold);padding-inline-start:12px;margin-top:13px}
+.two{display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <div class="mark">💍</div>
+      <div><b>منصة سوة</b><span>VISUAL SYSTEM · v1</span></div>
+    </div>
+    <div class="tag">Dark Luxury · RTL · UI UX Pro Max</div>
+  </div>
+
+  <div class="hero">
+    <div class="pill">قوالب دعوات تفاعلية · عربي RTL</div>
+    <h1>أجمل دعوة… تفتح بلمسة</h1>
+    <p>صندوق خاتم ثلاثي الأبعاد يفتح أمام ضيوفك، مع غرفة كاملة وموسيقى وعدّ تنازلي — ورابط واحد على واتساب.</p>
+    <div class="row" style="justify-content:center">
+      <button class="btn btn-p">جرّب القالب الآن</button>
+      <button class="btn btn-g">كيف يعمل؟</button>
+    </div>
+  </div>
+
+  <section>
+    <h2>الألوان</h2>
+    <div class="sub">ذهب واحد للتفاعل، زمردي للعمق، عاجي للنص.</div>
+    <div class="pal">
+      <div class="sw"><i style="background:#04120E"></i><b>الخلفية</b><span>#04120E</span></div>
+      <div class="sw"><i style="background:#07201A"></i><b>سطح ٢</b><span>#07201A</span></div>
+      <div class="sw"><i style="background:#0F5B4A"></i><b>زمردي</b><span>#0F5B4A</span></div>
+      <div class="sw"><i style="background:#C9A24A"></i><b>ذهبي</b><span>#C9A24A</span></div>
+      <div class="sw"><i style="background:#EFD79A"></i><b>ذهبي فاتح</b><span>#EFD79A</span></div>
+      <div class="sw"><i style="background:#F6EFE2"></i><b>عاجي</b><span>#F6EFE2</span></div>
+      <div class="sw"><i style="background:#A9B5AF"></i><b>نص ثانوي</b><span>#A9B5AF</span></div>
+      <div class="sw"><i style="background:#0B1613"></i><b>كارت</b><span>#0B1613</span></div>
+    </div>
+    <p class="note">التباين: العاجي والثانوي على الخلفية الداكنة ≥ 4.5:1. الذهبي لا يُستخدم كنص صغير على سطح فاتح.</p>
+  </section>
+
+  <section>
+    <h2>الخطوط</h2>
+    <div class="sub">Aref Ruqaa للعناوين · El Messiri للعناوين الفرعية · Tajawal للنص والواجهة.</div>
+    <div class="type">
+      <div class="spec"><span class="lbl">بطل · Aref Ruqaa 700 / 46</span><span class="h1">دعوة تفتح بابها بلمسة</span></div>
+      <div class="spec"><span class="lbl">عنوان قسم · 31</span><span class="h2">اختر قالبك ثم خصّصه</span></div>
+      <div class="spec"><span class="lbl">عنوان فرعي · El Messiri 600 / 21</span><span class="h3">صناديق خواتم ثلاثية الأبعاد</span></div>
+      <div class="spec"><span class="lbl">نص · Tajawal 400 / 16.5</span><span class="body">عدّل الأسماء والتاريخ والألوان، ثم اضغط زر «رابط» لتحصل على دعوة جاهزة للإرسال في واتساب.</span></div>
+      <div class="spec"><span class="lbl">ثانوي · 14.5</span><span class="dim">لا حاجة لتطبيق، ولا حساب للضيف: الرابط يفتح على أي جوال.</span></div>
+      <div class="spec"><span class="lbl">تسمية · 12 / .10em</span><span class="cap">معرض القوالب</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>الأزرار</h2>
+    <div class="sub">إجراء أساسي واحد في الشاشة. اللمعان والظل عند التمرير فقط.</div>
+    <div class="row">
+      <button class="btn btn-p">جرّب القالب الآن</button>
+      <button class="btn btn-g">اكتشف القوالب</button>
+      <a class="lnk" href="#">معاينة الدعوة ↗</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>كارت القالب</h2>
+    <div class="sub">الإجراء ظاهر دائمًا — لا يعتمد على التمرير (يعمل على الجوال).</div>
+    <div class="two">
+      <div class="card">
+        <div class="thumb"><i></i><div class="badge">الأبرز</div></div>
+        <div class="cbody">
+          <h3>معرض صناديق الخواتم ٣D</h3>
+          <p>صندوق خاتم يفتح عند اللمس، غرفة كاملة، وعدّ تنازلي للتاريخ.</p>
+          <a class="lnk" href="#">افتح القالب ←</a>
+        </div>
+      </div>
+      <div style="flex:1;min-width:280px">
+        <p class="dim" style="margin-bottom:12px">بطاقة القالب تحمل: نوع المناسبة، اسم القالب، وصفًا من سطرين، ووسوم الميزات (صندوق ٣D · غرفة · موسيقى · عدّ تنازلي).</p>
+        <p class="dim">المقاسات: ٣٣٠px على المكتب، ١٠٠٪ على الجوال. الظل يهدأ عند `prefers-reduced-motion`.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
