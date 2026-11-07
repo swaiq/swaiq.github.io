@@ -1,0 +1,998 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ريلز إنستغرام التسويقي — منصة سوة | Instagram Reel Creator</title>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink&family=Aref+Ruqaa&family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;900&family=El+Messiri:wght@600;700&display=swap" rel="stylesheet">
+<script src="libs/three.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#d4af37;--gold-glow:#ffd700;--gold-light:#fff2cc;
+  --bg:#070b09;--panel:#0e1713;
+  --primary:#1a4a3c;
+}
+html,body{height:100%;overflow-x:hidden}
+body{
+  font-family:'Tajawal','Cairo',sans-serif;
+  background:var(--bg);
+  color:#f4f0e6;
+  display:flex;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   LAYOUT: SIDEBAR + REEL VIEWER
+═══════════════════════════════════════════ */
+#app{
+  display:flex;
+  width:100%;
+  min-height:100vh;
+}
+
+/* Sidebar controls */
+#sidebar{
+  width:380px;
+  background:var(--panel);
+  border-left:1px solid rgba(212,175,55,.18);
+  padding:28px 24px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  overflow-y:auto;
+  z-index:10;
+}
+.sidebar-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(212,175,55,.15);
+}
+.sidebar-logo{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#d4af37,#aa771c);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  box-shadow:0 4px 16px rgba(0,0,0,.4);
+}
+.sidebar-title{font-family:'Aref Ruqaa Ink',serif;font-size:20px;color:var(--gold-light)}
+.sidebar-sub{font-size:11px;color:rgba(244,240,230,.5)}
+
+.sec-box{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(212,175,55,.12);
+  border-radius:14px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.sec-title{
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* Buttons */
+.btn{
+  font-family:'Cairo',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  padding:12px 18px;
+  border-radius:10px;
+  cursor:pointer;
+  border:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:all .25s ease;
+  text-decoration:none;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#d4af37,#aa771c);
+  color:#1c1404;
+  box-shadow:0 4px 16px rgba(212,175,55,.25);
+}
+.btn-primary:hover{
+  background:linear-gradient(135deg,#ffd700,#c68e22);
+  transform:translateY(-1px);
+}
+.btn-record{
+  background:linear-gradient(135deg,#e74c3c,#c0392b);
+  color:#fff;
+  box-shadow:0 4px 16px rgba(231,76,60,.35);
+}
+.btn-record.recording{
+  animation:recPulse 1s infinite alternate;
+}
+@keyframes recPulse{from{background:#c0392b}to{background:#ff6b6b}}
+.btn-secondary{
+  background:rgba(255,255,255,.07);
+  color:#f4f0e6;
+  border:1px solid rgba(255,255,255,.15);
+}
+.btn-secondary:hover{background:rgba(255,255,255,.12)}
+
+/* Reel Preview Stage */
+#stage{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  position:relative;
+  background:
+    radial-gradient(circle 600px at 50% 50%,rgba(26,74,60,.18),transparent 70%),
+    #050807;
+}
+
+/* Phone Frame (9:16 Instagram Reel) */
+.phone-mockup{
+  position:relative;
+  width:min(400px,90vw);
+  aspect-ratio:9/16;
+  background:#000;
+  border-radius:44px;
+  border:4px solid #28302b;
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.9),
+    0 0 0 1px rgba(212,175,55,.2),
+    0 0 40px rgba(212,175,55,.1);
+  overflow:hidden;
+  display:flex;
+}
+
+/* Reel Canvas */
+#reelCanvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* Instagram UI Overlay on preview */
+.insta-overlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:20;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:16px;
+}
+.insta-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:#fff;
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+}
+.insta-sidebar{
+  position:absolute;
+  bottom:80px;
+  left:14px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  color:#fff;
+}
+.insta-icon-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  font-size:11px;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+}
+.insta-icon-btn svg{width:24px;height:24px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8))}
+
+.insta-bottom{
+  padding-bottom:12px;
+  padding-right:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  text-shadow:0 1px 4px rgba(0,0,0,.9);
+}
+.insta-user{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  font-size:13px;
+}
+.insta-user-avatar{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#d4af37,#aa771c);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+}
+.insta-caption{font-size:12px;color:rgba(255,255,255,.9);line-height:1.4}
+.insta-audio{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.75)}
+
+/* Playback bar */
+#timelineControls{
+  width:min(400px,90vw);
+  margin-top:16px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.timeline-bar-wrap{
+  height:6px;
+  background:rgba(255,255,255,.1);
+  border-radius:3px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+#timelineFill{
+  height:100%;
+  background:linear-gradient(90deg,var(--gold),var(--gold-glow));
+  width:0%;
+  transition:width .1s linear;
+}
+.timeline-btns{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.time-label{font-family:'Cairo',sans-serif;font-size:12px;color:rgba(244,240,230,.6)}
+
+/* Marketing Copy Box */
+.copy-area{
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;
+  padding:10px;
+  font-family:'Cairo',sans-serif;
+  font-size:11.5px;
+  color:rgba(244,240,230,.85);
+  line-height:1.6;
+  white-space:pre-line;
+  max-height:130px;
+  overflow-y:auto;
+}
+
+@media(max-width:850px){
+  #app{flex-direction:column-reverse}
+  #sidebar{width:100%;border-left:none;border-top:1px solid rgba(212,175,55,.18)}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- ═══════════════════════
+       CONTROL PANEL (SIDEBAR)
+  ════════════════════════════ -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">🎬</div>
+      <div>
+        <h1 class="sidebar-title">ريلز إنستغرام التسويقي</h1>
+        <p class="sidebar-sub">منصة سوة — موشن جرافيك للدعوات 3D</p>
+      </div>
+    </div>
+
+    <!-- Export & Record -->
+    <div class="sec-box">
+      <div class="sec-title">🎥 تصدير الفيديو للنشر</div>
+      <p style="font-size:12px;color:rgba(244,240,230,.65);line-height:1.5">
+        يمكنك تسجيل الريلز بدقة إنستغرام (1080x1920) وتحميله مباشرة كفيديو WebM/MP4 لنشره على حسابك:
+      </p>
+      <button class="btn btn-record" id="recordBtn" onclick="toggleRecord()">
+        <span id="recDot" style="width:10px;height:10px;border-radius:50%;background:#fff"></span>
+        <span id="recText">تسجيل وتنزيل الريلز (فيديو)</span>
+      </button>
+      <button class="btn btn-primary" onclick="restartReel()">
+        <span>↺ إعادة تشغيل من البداية</span>
+      </button>
+    </div>
+
+    <!-- Scenes list -->
+    <div class="sec-box">
+      <div class="sec-title">🎞️ مشاهد الريلز (١٦ ثانية)</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+        <div style="padding:6px 10px;background:rgba(255,255,255,.05);border-radius:6px;display:flex;justify-content:space-between">
+          <span>١. الهوك والجذب: "دعوة زفافك لأول مرة 3D"</span>
+          <span style="color:var(--gold)">0:00 - 0:04</span>
+        </div>
+        <div style="padding:6px 10px;background:rgba(255,255,255,.05);border-radius:6px;display:flex;justify-content:space-between">
+          <span>٢. فتح الصندوق ثلاثي الأبعاد والخواتم</span>
+          <span style="color:var(--gold)">0:04 - 0:09</span>
+        </div>
+        <div style="padding:6px 10px;background:rgba(255,255,255,.05);border-radius:6px;display:flex;justify-content:space-between">
+          <span>٣. تجربة التمرير والعداد التنازلي</span>
+          <span style="color:var(--gold)">0:09 - 0:13</span>
+        </div>
+        <div style="padding:6px 10px;background:rgba(255,255,255,.05);border-radius:6px;display:flex;justify-content:space-between">
+          <span>٤. دعوة للطلب والعرض (CTA)</span>
+          <span style="color:var(--gold)">0:13 - 0:16</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ready Caption for Instagram -->
+    <div class="sec-box">
+      <div class="sec-title">📝 كابشن جاهز لبوست إنستغرام</div>
+      <div class="copy-area" id="captionText">
+خلّ دعوة زفافك تبهر الكل لأول مرة في الشرق الأوسط! 💍✨
+
+بطاقة دعوة تفاعلية ثلاثية الأبعاد تنفتح بلمسة واحدة مع صندوق الخاتم الحقيقي ومؤقت تنازلي وموقع القاعة بدقة.
+
+✨ ميزات قالب منصة سوة:
+• صندوق 3D تفاعلي يفتح بنعومة
+• تصميم فاخر وخطوط ذهبية ملكية
+• متوافق تماماً مع جميع الهواتف
+• مشاركة سريعة عبر واتساب وإنستغرام
+
+🔗 الرابط في البايو لتجربة القالب والطلب الآن!
+#دعوة_الكترونية #دعوة_زفاف #زواج #عقد_قران #دعوات_الكترونيه #منصة_سوة #دعوة3D
+      </div>
+      <button class="btn btn-secondary" onclick="copyCaption()" style="font-size:12px;padding:8px">
+        📋 نسخ نص الكابشن والهاشتاغات
+      </button>
+    </div>
+
+    <!-- Quick Links -->
+    <div style="display:flex;gap:8px">
+      <a href="template-view.html" target="_blank" class="btn btn-secondary" style="flex:1;font-size:12px">
+        👁️ معاينة القالب
+      </a>
+      <a href="index.html" class="btn btn-secondary" style="flex:1;font-size:12px">
+        🏠 الرئيسية
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════
+       PREVIEW STAGE
+  ════════════════════════════ -->
+  <main id="stage">
+    <!-- Phone Mockup -->
+    <div class="phone-mockup">
+      <canvas id="reelCanvas" width="720" height="1280"></canvas>
+
+      <!-- Instagram UI Overlay -->
+      <div class="insta-overlay">
+        <div class="insta-top">
+          <span>ريلز Reels</span>
+          <span>📷</span>
+        </div>
+
+        <div class="insta-sidebar">
+          <div class="insta-icon-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span>4.8K</span>
+          </div>
+          <div class="insta-icon-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18z"/></svg>
+            <span>342</span>
+          </div>
+          <div class="insta-icon-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            <span>مشاركة</span>
+          </div>
+        </div>
+
+        <div class="insta-bottom">
+          <div class="insta-user">
+            <div class="insta-user-avatar">💍</div>
+            <span>maazoom_invites</span>
+            <span style="font-size:10px;background:rgba(212,175,55,.2);color:var(--gold);padding:2px 8px;border-radius:999px;border:1px solid rgba(212,175,55,.4)">متابعة</span>
+          </div>
+          <div class="insta-caption">
+            أول دعوة زفاف تفاعلية ثلاثية الأبعاد في الوطن العربي 💍✨ اطلبها الآن عبر الرابط في البايو
+          </div>
+          <div class="insta-audio">
+            <span>🎵</span>
+            <span>الصوت الأصلي — سوة | موسيقى زفاف راقية</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Playback bar -->
+    <div id="timelineControls">
+      <div class="timeline-bar-wrap" onclick="seekReel(event)">
+        <div id="timelineFill"></div>
+      </div>
+      <div class="timeline-btns">
+        <button class="btn btn-secondary" onclick="togglePlayPause()" style="padding:6px 14px;font-size:12px" id="playBtn">
+          ⏸️ إيقاف
+        </button>
+        <div class="time-label" id="timeLabel">00:00 / 00:16</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     3D & MOTION GRAPHICS ENGINE
+═══════════════════════════════════════════ -->
+<script>
+const TOTAL_DURATION = 16.0; // 16 seconds reel
+let currentTime = 0;
+let isPlaying = true;
+let isRecording = false;
+let mediaRecorder = null;
+let recordedChunks = [];
+
+const canvas = document.getElementById('reelCanvas');
+const ctx = canvas.getContext('2d');
+const W = 720, H = 1280;
+
+/* ═══════════════════════════════════════
+   OFFSCREEN THREE.JS BOX RENDERER
+═══════════════════════════════════════ */
+const threeCanvas = document.createElement('canvas');
+threeCanvas.width = 720;
+threeCanvas.height = 720;
+const ren = new THREE.WebGLRenderer({canvas:threeCanvas,antialias:true,alpha:true});
+ren.setSize(720,720);
+ren.setPixelRatio(1);
+ren.shadowMap.enabled = true;
+ren.toneMapping = THREE.ACESFilmicToneMapping;
+ren.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38,1,0.1,50);
+camera.position.set(0, 3.2, 9.5);
+camera.lookAt(0, 0.7, 0);
+
+/* Lights */
+const amb = new THREE.AmbientLight(0xfff5e0, 0.7);
+scene.add(amb);
+const sun = new THREE.DirectionalLight(0xffeedd, 1.8);
+sun.position.set(4, 9, 5);
+sun.castShadow = true;
+scene.add(sun);
+const spot = new THREE.SpotLight(0xffd700, 2.5, 15, Math.PI/4, 0.5);
+spot.position.set(0, 6, 2);
+scene.add(spot);
+
+/* Materials */
+function col(hex){return new THREE.Color(hex)}
+const goldMat = new THREE.MeshStandardMaterial({color:col('#d4af37'),metalness:0.9,roughness:0.25});
+const darkBoxMat = new THREE.MeshStandardMaterial({color:col('#141816'),roughness:0.35,metalness:0.1});
+const cushionMat = new THREE.MeshStandardMaterial({color:col('#2a3830'),roughness:0.9});
+const gemMat = new THREE.MeshStandardMaterial({color:col('#ffffff'),roughness:0.05,metalness:0.4});
+
+/* Box Group */
+const boxRoot = new THREE.Group();
+scene.add(boxRoot);
+
+/* Base */
+const base = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 0.6, 6), darkBoxMat);
+base.position.y = 0.3;
+base.castShadow = true;
+boxRoot.add(base);
+
+/* Gold trim on base */
+const trim = new THREE.Mesh(new THREE.CylinderGeometry(1.53, 1.53, 0.08, 6), goldMat);
+trim.position.y = 0.55;
+boxRoot.add(trim);
+
+/* Cushion */
+const cush = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.35, 0.25, 6), cushionMat);
+cush.position.y = 0.5;
+boxRoot.add(cush);
+
+/* Lid (hinged at back) */
+const lidGroup = new THREE.Group();
+lidGroup.position.set(0, 0.6, -1.3);
+const lid = new THREE.Mesh(new THREE.CylinderGeometry(1.52, 1.52, 0.3, 6), darkBoxMat);
+lid.position.set(0, 0.15, 1.3);
+lid.castShadow = true;
+const lidTrim = new THREE.Mesh(new THREE.CylinderGeometry(1.55, 1.55, 0.06, 6), goldMat);
+lidTrim.position.set(0, 0.02, 1.3);
+lid.add(lidTrim);
+lidGroup.add(lid);
+boxRoot.add(lidGroup);
+
+/* Two Rings inside */
+const ringGroup = new THREE.Group();
+ringGroup.position.y = 0.65;
+boxRoot.add(ringGroup);
+
+const ring1 = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.08, 16, 32), goldMat);
+ring1.rotation.x = Math.PI / 2.3;
+ring1.position.set(-0.25, 0.2, 0);
+ringGroup.add(ring1);
+
+const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.12, 1), gemMat);
+gem.position.set(-0.25, 0.55, 0);
+ringGroup.add(gem);
+
+const ring2 = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.09, 16, 32), goldMat);
+ring2.rotation.x = Math.PI / 2.3;
+ring2.position.set(0.28, 0.18, 0);
+ringGroup.add(ring2);
+
+/* Background glow disc */
+const glowDisc = new THREE.Mesh(
+  new THREE.CircleGeometry(2.2, 32),
+  new THREE.MeshBasicMaterial({color:col('#ffd700'),transparent:true,opacity:0})
+);
+glowDisc.rotation.x = -Math.PI / 2;
+glowDisc.position.y = 0.01;
+boxRoot.add(glowDisc);
+
+/* ═══════════════════════════════════════
+   PARTICLES ENGINE
+═══════════════════════════════════════ */
+const particles = [];
+for(let i=0; i<60; i++){
+  particles.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    s: Math.random() * 3 + 1,
+    vy: Math.random() * 0.8 + 0.3,
+    vx: (Math.random() - 0.5) * 0.4,
+    a: Math.random() * Math.PI * 2,
+    alpha: Math.random() * 0.7 + 0.2
+  });
+}
+
+function updateParticles(){
+  particles.forEach(p=>{
+    p.y -= p.vy;
+    p.x += Math.sin(p.a) * p.vx;
+    p.a += 0.02;
+    if(p.y < -10) p.y = H + 10;
+  });
+}
+
+/* ═══════════════════════════════════════
+   MOTION GRAPHICS SCENE RENDERER
+═══════════════════════════════════════ */
+function easeInOut(t){return t<.5 ? 2*t*t : -1+(4-2*t)*t}
+function easeOutBack(t){const c1=1.70158, c3=c1+1; return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2)}
+
+function renderReel(t){
+  ctx.clearRect(0, 0, W, H);
+
+  /* Deep Emerald Luxury Background */
+  const grad = ctx.createRadialGradient(W/2, H*0.4, 80, W/2, H*0.4, 700);
+  grad.addColorStop(0, '#0f382c');
+  grad.addColorStop(0.5, '#071c16');
+  grad.addColorStop(1, '#020907');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  /* Golden particle specks */
+  updateParticles();
+  particles.forEach(p=>{
+    ctx.save();
+    ctx.fillStyle = `rgba(255, 215, 0, ${p.alpha})`;
+    ctx.shadowColor = '#ffd700';
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.s, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  /* Border vignette */
+  ctx.save();
+  ctx.strokeStyle = 'rgba(212, 175, 55, 0.25)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(20, 20, W-40, H-40);
+  ctx.strokeStyle = 'rgba(212, 175, 55, 0.12)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(28, 28, W-56, H-56);
+  ctx.restore();
+
+  /* ═══════════════════════════════════════
+     SCENE 1: HOOK (0s - 4s)
+  ═══════════════════════════════════════════ */
+  if(t < 4.5){
+    const s1Alpha = t < 3.8 ? Math.min(1, t*2.5) : Math.max(0, 1-(t-3.8)*5);
+    ctx.save();
+    ctx.globalAlpha = s1Alpha;
+
+    // Badge
+    const bScale = Math.min(1, t*2);
+    ctx.save();
+    ctx.translate(W/2, 280);
+    ctx.scale(bScale, bScale);
+    drawPill("💍 فكرة خيالية لدعوة زفافك 2025", 0, 0, '#d4af37', '#ffd700');
+    ctx.restore();
+
+    // Big Catchy Title
+    ctx.textAlign = 'center';
+    ctx.font = '900 52px Cairo, sans-serif';
+    ctx.fillStyle = '#f4f0e6';
+    ctx.fillText("خلّ دعوتك تبهر الكل!", W/2, 420);
+
+    ctx.font = '700 74px "Aref Ruqaa Ink", serif';
+    const goldGrad = ctx.createLinearGradient(W/2 - 200, 0, W/2 + 200, 0);
+    goldGrad.addColorStop(0, '#fff4d4');
+    goldGrad.addColorStop(0.5, '#ffd700');
+    goldGrad.addColorStop(1, '#aa771c');
+    ctx.fillStyle = goldGrad;
+    ctx.shadowColor = 'rgba(212, 175, 55, 0.6)';
+    ctx.shadowBlur = 24;
+    ctx.fillText("لأول مرة دعوة 3D", W/2, 530);
+
+    // Subtitle
+    ctx.shadowBlur = 0;
+    ctx.font = '500 28px Tajawal, sans-serif';
+    ctx.fillStyle = 'rgba(244, 240, 230, 0.8)';
+    ctx.fillText("صندوق حقيقي يفتح بلمسة واحدة ✨", W/2, 610);
+
+    // Decorative Icon / Ring
+    ctx.font = '100px sans-serif';
+    ctx.fillText("🎁", W/2, 770);
+
+    // Pulsing CTA hint
+    const pulse = 1 + Math.sin(t*8)*0.06;
+    ctx.save();
+    ctx.translate(W/2, 920);
+    ctx.scale(pulse, pulse);
+    drawPill("شاهد طريقة الفتح الساحرة 👇", 0, 0, '#ffffff', '#d4af37');
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  /* ═══════════════════════════════════════
+     SCENE 2: 3D BOX OPENING (3.5s - 9.5s)
+  ═══════════════════════════════════════════ */
+  if(t >= 3.5 && t < 10.0){
+    const s2Alpha = t < 4.2 ? (t-3.5)/0.7 : (t > 9.2 ? 1-(t-9.2)/0.8 : 1);
+    ctx.save();
+    ctx.globalAlpha = s2Alpha;
+
+    // Top Header
+    ctx.textAlign = 'center';
+    ctx.font = '700 40px Cairo, sans-serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText("✨ تجربة تفاعلية حية", W/2, 180);
+
+    ctx.font = '400 24px Tajawal, sans-serif';
+    ctx.fillStyle = 'rgba(244,240,230,0.85)';
+    ctx.fillText("الضيف يلمس الشاشة فيفتح الصندوق وتخرج الخواتم", W/2, 230);
+
+    // Update Three.js 3D Box Animation
+    const boxTime = t - 3.8;
+    // Rotation
+    boxRoot.rotation.y = boxTime * 0.45;
+
+    // Lid opening progress (starts at t=5s)
+    let openProgress = 0;
+    if(t >= 4.8){
+      openProgress = Math.min(1, (t - 4.8) / 1.6);
+      openProgress = easeInOut(openProgress);
+    }
+    lidGroup.rotation.x = -openProgress * 2.1;
+    ringGroup.position.y = 0.65 + openProgress * 0.45;
+    glowDisc.material.opacity = openProgress * 0.6;
+    spot.intensity = 2.5 + openProgress * 2.0;
+
+    // Render ThreeJS Scene to threeCanvas
+    ren.render(scene, camera);
+
+    // Draw ThreeJS Canvas in the center
+    const boxScale = 1.05;
+    ctx.save();
+    ctx.translate(W/2, 600);
+    ctx.scale(boxScale, boxScale);
+    ctx.drawImage(threeCanvas, -360, -360);
+    ctx.restore();
+
+    // Animated "Tap to open" Finger
+    if(t < 5.2){
+      const tapY = 660 + Math.sin(t*12) * 15;
+      ctx.font = '44px sans-serif';
+      ctx.fillText("👆", W/2 + 70, tapY);
+      drawPill("المس هنا للفتح", W/2, 880, '#ffd700', '#aa771c');
+    } else {
+      // "هل تتزوجني؟" / أسماء العروسين popup
+      const popProgress = Math.min(1, (t-5.2)*2);
+      ctx.save();
+      ctx.translate(W/2, 890);
+      ctx.scale(popProgress, popProgress);
+      drawPill("💍 أحمد ❖ سارة — بارك الله لهما", 0, 0, '#ffffff', '#d4af37');
+      ctx.restore();
+    }
+
+    ctx.restore();
+  }
+
+  /* ═══════════════════════════════════════
+     SCENE 3: INVITATION DETAILS SCROLL (9.0s - 13.5s)
+  ═══════════════════════════════════════════ */
+  if(t >= 9.0 && t < 13.5){
+    const s3Alpha = t < 9.6 ? (t-9.0)/0.6 : (t > 12.8 ? 1-(t-12.8)/0.7 : 1);
+    ctx.save();
+    ctx.globalAlpha = s3Alpha;
+
+    ctx.textAlign = 'center';
+    ctx.font = '700 42px Cairo, sans-serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText("📜 دعوة إلكترونية متكاملة", W/2, 180);
+
+    ctx.font = '400 24px Tajawal, sans-serif';
+    ctx.fillStyle = 'rgba(244,240,230,0.85)';
+    ctx.fillText("تصميم مذهب مستوحى من بطاقات الأفراح الملكية", W/2, 230);
+
+    // Feature Cards
+    const features = [
+      {icon:"⏳", title:"عداد تنازلي حي", desc:"يحسب الأيام والساعات لموعد الحفل مباشرة"},
+      {icon:"📍", title:"موقع القاعة بالخريطة", desc:"زر ينقل الضيف فوراً إلى Google Maps"},
+      {icon:"🎵", title:"موسيقى هادئة فاخرة", desc:"مشغل صوتي ناعم يرافق فتح الدعوة"},
+      {icon:"📲", title:"إرسال مباشر عبر واتساب", desc:"رابط خاص يفتح على جميع هواتف آيفون وأندرويد"}
+    ];
+
+    features.forEach((f, idx)=>{
+      const fDelay = 9.4 + idx * 0.45;
+      if(t >= fDelay){
+        const anim = Math.min(1, (t - fDelay) * 3);
+        const yPos = 340 + idx * 135;
+        ctx.save();
+        ctx.translate(W/2, yPos);
+        ctx.scale(anim, anim);
+
+        // Card bg
+        ctx.fillStyle = 'rgba(15, 48, 38, 0.75)';
+        ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+        ctx.lineWidth = 1.5;
+        roundRect(ctx, -280, -48, 560, 96, 16, true, true);
+
+        // Icon
+        ctx.font = '36px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(f.icon, 240, 10);
+
+        // Text
+        ctx.textAlign = 'right';
+        ctx.font = '700 24px Cairo, sans-serif';
+        ctx.fillStyle = '#ffd700';
+        ctx.fillText(f.title, 180, -6);
+
+        ctx.font = '400 17px Tajawal, sans-serif';
+        ctx.fillStyle = 'rgba(244,240,230,0.8)';
+        ctx.fillText(f.desc, 180, 26);
+
+        ctx.restore();
+      }
+    });
+
+    ctx.restore();
+  }
+
+  /* ═══════════════════════════════════════
+     SCENE 4: CTA / ORDER NOW (13.0s - 16.0s)
+  ═══════════════════════════════════════════ */
+  if(t >= 13.0){
+    const s4Alpha = t < 13.5 ? (t-13.0)/0.5 : 1;
+    ctx.save();
+    ctx.globalAlpha = s4Alpha;
+
+    // Monogram Seal
+    ctx.save();
+    ctx.translate(W/2, 280);
+    ctx.beginPath();
+    ctx.arc(0, 0, 55, 0, Math.PI*2);
+    ctx.fillStyle = 'linear-gradient(135deg, #ffd700, #aa771c)';
+    ctx.fillStyle = '#aa771c';
+    ctx.fill();
+    ctx.strokeStyle = '#ffd700';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.font = '48px sans-serif';
+    ctx.fillText("💍", 0, 16);
+    ctx.restore();
+
+    // Brand title
+    ctx.textAlign = 'center';
+    ctx.font = '700 48px "Aref Ruqaa Ink", serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.fillText("منصة سوة", W/2, 400);
+
+    ctx.font = '700 32px Cairo, sans-serif';
+    ctx.fillStyle = '#f4f0e6';
+    ctx.fillText("صمم دعوتك الفاخرة خلال دقائق", W/2, 470);
+
+    ctx.font = '400 22px Tajawal, sans-serif';
+    ctx.fillStyle = 'rgba(244, 240, 230, 0.8)';
+    ctx.fillText("القالب متاح الآن للطلب والتخصيص الفوري", W/2, 530);
+
+    // Big Golden CTA Button
+    const pulse = 1 + Math.sin(t*10) * 0.04;
+    ctx.save();
+    ctx.translate(W/2, 690);
+    ctx.scale(pulse, pulse);
+
+    ctx.fillStyle = '#ffd700';
+    ctx.shadowColor = '#ffd700';
+    ctx.shadowBlur = 30;
+    roundRect(ctx, -260, -42, 520, 84, 999, true, false);
+
+    ctx.shadowBlur = 0;
+    ctx.font = '900 28px Cairo, sans-serif';
+    ctx.fillStyle = '#1c1404';
+    ctx.fillText("اطلب قالبك الآن 🔗 الرابط في البايو", 0, 10);
+    ctx.restore();
+
+    // Instagram Handle
+    ctx.font = '600 24px Cairo, sans-serif';
+    ctx.fillStyle = 'rgba(212, 175, 55, 0.9)';
+    ctx.fillText("@maazoom_invites", W/2, 830);
+
+    // Trust badge
+    ctx.font = '400 18px Tajawal, sans-serif';
+    ctx.fillStyle = 'rgba(244,240,230,0.6)';
+    ctx.fillText("✓ دعم فني سريع  •  ✓ تعديل كامل للأسماء  •  ✓ تسليم فوري", W/2, 890);
+
+    ctx.restore();
+  }
+}
+
+/* Helper: Pill */
+function drawPill(text, x, y, strokeColor, fillColor){
+  ctx.save();
+  ctx.font = '700 20px Cairo, sans-serif';
+  const tw = ctx.measureText(text).width + 50;
+  ctx.fillStyle = 'rgba(10, 28, 22, 0.85)';
+  ctx.strokeStyle = strokeColor;
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, x - tw/2, y - 22, tw, 44, 22, true, true);
+  ctx.fillStyle = fillColor;
+  ctx.textAlign = 'center';
+  ctx.fillText(text, x, y + 7);
+  ctx.restore();
+}
+
+/* Helper: Rounded Rect */
+function roundRect(ctx, x, y, width, height, radius, fill, stroke){
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height - radius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  ctx.lineTo(x + radius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  if (fill) ctx.fill();
+  if (stroke) ctx.stroke();
+}
+
+/* ═══════════════════════════════════════
+   MAIN ANIMATION LOOP
+═══════════════════════════════════════ */
+let lastTimestamp = performance.now();
+function loop(now){
+  requestAnimationFrame(loop);
+  const delta = (now - lastTimestamp) / 1000;
+  lastTimestamp = now;
+
+  if(isPlaying){
+    currentTime += delta;
+    if(currentTime >= TOTAL_DURATION){
+      if(isRecording){
+        stopRecording();
+      }
+      currentTime = 0; // loop
+    }
+  }
+
+  renderReel(currentTime);
+
+  // Update UI timeline
+  const pct = (currentTime / TOTAL_DURATION) * 100;
+  document.getElementById('timelineFill').style.width = pct + '%';
+  const f = n => String(Math.floor(n)).padStart(2,'0');
+  document.getElementById('timeLabel').textContent = `${f(currentTime)}:00 / 00:16`;
+}
+requestAnimationFrame(loop);
+
+/* Controls */
+function togglePlayPause(){
+  isPlaying = !isPlaying;
+  document.getElementById('playBtn').textContent = isPlaying ? '⏸️ إيقاف' : '▶️ تشغيل';
+}
+
+function restartReel(){
+  currentTime = 0;
+  isPlaying = true;
+  document.getElementById('playBtn').textContent = '⏸️ إيقاف';
+}
+
+function seekReel(e){
+  const rect = e.currentTarget.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  currentTime = (clickX / rect.width) * TOTAL_DURATION;
+}
+
+function copyCaption(){
+  const txt = document.getElementById('captionText').innerText;
+  navigator.clipboard.writeText(txt).then(()=>alert('تم نسخ الكابشن والهاشتاغات بنجاح!'));
+}
+
+/* ═══════════════════════════════════════
+   VIDEO RECORDING & DOWNLOAD ENGINE
+═══════════════════════════════════════ */
+function toggleRecord(){
+  if(isRecording){
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording(){
+  recordedChunks = [];
+  currentTime = 0;
+  isPlaying = true;
+
+  const stream = canvas.captureStream(30); // 30 FPS high quality
+  let mimeType = 'video/webm;codecs=vp9';
+  if(!MediaRecorder.isTypeSupported(mimeType)){
+    mimeType = 'video/webm';
+  }
+
+  mediaRecorder = new MediaRecorder(stream, {
+    mimeType: mimeType,
+    videoBitsPerSecond: 8000000 // 8 Mbps high bit rate
+  });
+
+  mediaRecorder.ondataavailable = function(e){
+    if(e.data.size > 0) recordedChunks.push(e.data);
+  };
+
+  mediaRecorder.onstop = function(){
+    const blob = new Blob(recordedChunks, {type: mimeType});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'maazoom-wedding-reel.webm';
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(url), 2000);
+  };
+
+  mediaRecorder.start();
+  isRecording = true;
+  document.getElementById('recordBtn').classList.add('recording');
+  document.getElementById('recText').textContent = '🔴 جارٍ تسجيل الريلز (انتظر 16 ثانية)...';
+}
+
+function stopRecording(){
+  if(!isRecording) return;
+  mediaRecorder.stop();
+  isRecording = false;
+  document.getElementById('recordBtn').classList.remove('recording');
+  document.getElementById('recText').textContent = 'تسجيل وتنزيل الريلز (فيديو)';
+}
+</script>
+
+</body>
+</html>
+

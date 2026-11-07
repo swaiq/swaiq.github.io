@@ -1,0 +1,995 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دعوة زفاف — أحمد ❖ سارة | منصة سوة</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa+Ink&family=Aref+Ruqaa&family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&family=El+Messiri:wght@400;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & LUXURY VARIABLES
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#d4af37;
+  --gold-light:#fff2cc;
+  --gold-glow:#ffd700;
+  --gold-rich:#aa771c;
+  --gold-grad:linear-gradient(135deg,#fff4d4 0%,#ffd700 28%,#d4af37 55%,#f9e198 78%,#9a6f1a 100%);
+  --bg-deep:#030d0a;
+  --bg-emerald:#061c15;
+  --bg-emerald-soft:#0c2d22;
+  --ink:#f4f0e6;
+  --ink-dim:rgba(244,240,230,.75);
+  --ink-muted:rgba(244,240,230,.5);
+  --card-border:rgba(212,175,55,.35);
+  --card-border-inner:rgba(212,175,55,.18);
+  --shadow-gold:0 0 50px rgba(212,175,55,.2),0 25px 70px rgba(0,0,0,.7);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:'Tajawal','Cairo',sans-serif;
+  background:var(--bg-deep);
+  color:var(--ink);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ═══════════════════════════════════════════
+   GLOBAL BACKGROUND PATTERN & STARS
+═══════════════════════════════════════════ */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background:
+    radial-gradient(circle 800px at 50% 15%,rgba(26,74,60,.35),transparent 70%),
+    radial-gradient(circle 600px at 85% 75%,rgba(212,175,55,.08),transparent 60%),
+    radial-gradient(circle 600px at 15% 45%,rgba(15,48,40,.4),transparent 65%),
+    radial-gradient(ellipse at center,transparent 40%,rgba(3,13,10,.85) 100%);
+  pointer-events:none;
+}
+/* Subtle Islamic Damask Grid */
+body::after{
+  content:'';
+  position:fixed;
+  inset:0;
+  z-index:0;
+  background-image:radial-gradient(circle,rgba(212,175,55,.12) 1px,transparent 1px);
+  background-size:28px 28px;
+  opacity:.45;
+  pointer-events:none;
+}
+
+/* ═══════════════════════════════════════════
+   FLOATING MUSIC PLAYER
+═══════════════════════════════════════════ */
+#musicToggle{
+  position:fixed;
+  top:18px;
+  right:20px;
+  z-index:1001;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:9px 18px;
+  background:rgba(6,28,21,.85);
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:999px;
+  color:var(--gold-light);
+  font-family:'Cairo',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  transition:all .3s ease;
+}
+#musicToggle:hover{
+  background:rgba(212,175,55,.2);
+  border-color:var(--gold-glow);
+  transform:scale(1.04);
+}
+.music-bars{
+  display:inline-flex;
+  align-items:flex-end;
+  gap:2.5px;
+  height:14px;
+}
+.music-bar{
+  width:2.5px;
+  height:100%;
+  background:var(--gold);
+  border-radius:1px;
+  animation:eqBar 1.2s ease-in-out infinite alternate;
+}
+.music-bar:nth-child(2){animation-delay:.2s;animation-duration:.9s}
+.music-bar:nth-child(3){animation-delay:.4s;animation-duration:1.4s}
+.music-bars.paused .music-bar{
+  animation-play-state:paused;
+  height:4px!important;
+}
+@keyframes eqBar{0%{height:3px}100%{height:14px}}
+
+/* ═══════════════════════════════════════════
+   NAV BAR
+═══════════════════════════════════════════ */
+#nav{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 32px;
+  background:rgba(3,13,10,.7);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(212,175,55,.12);
+  transition:background .4s;
+}
+#nav.opaque{background:rgba(3,13,10,.96)}
+.nav-logo{
+  font-family:'Aref Ruqaa Ink',serif;
+  font-size:22px;
+  color:var(--gold-light);
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:10px;align-items:center}
+.nav-link{
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  color:var(--ink-dim);
+  text-decoration:none;
+  padding:7px 16px;
+  border-radius:999px;
+  transition:all .2s;
+  font-weight:500;
+}
+.nav-link:hover{color:#fff;background:rgba(255,255,255,.07)}
+.nav-btn{
+  background:linear-gradient(135deg,rgba(212,175,55,.25),rgba(212,175,55,.08));
+  color:var(--gold-light)!important;
+  border:1px solid rgba(212,175,55,.45);
+  font-weight:600!important;
+}
+.nav-btn:hover{
+  background:linear-gradient(135deg,rgba(212,175,55,.45),rgba(212,175,55,.2))!important;
+  border-color:var(--gold-glow)!important;
+}
+
+/* Progress bar */
+#prog{position:fixed;top:0;left:0;right:0;height:2.5px;z-index:1002;background:transparent}
+#prog-bar{height:100%;background:linear-gradient(90deg,var(--gold-rich),var(--gold),var(--gold-light));width:0%;box-shadow:0 0 10px rgba(212,175,55,.8)}
+
+/* ═══════════════════════════════════════════
+   SECTION 1 — LUXURY WEDDING INVITATION COVER
+═══════════════════════════════════════════ */
+#s1{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:100px 20px 80px;
+  z-index:1;
+}
+
+/* Card Container (Like ChungDoi & The Digital Yes) */
+.invitation-card{
+  position:relative;
+  width:100%;
+  max-width:620px;
+  background:
+    radial-gradient(circle 380px at 50% 0%,rgba(35,84,68,.35),transparent 70%),
+    linear-gradient(170deg,rgba(11,36,28,.92) 0%,rgba(5,19,15,.96) 100%);
+  border:1.5px solid rgba(212,175,55,.45);
+  border-radius:28px;
+  padding:clamp(40px,7vw,64px) clamp(24px,6vw,48px);
+  text-align:center;
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.85),
+    0 0 0 1px rgba(255,255,255,.06) inset,
+    0 0 45px rgba(212,175,55,.12);
+  backdrop-filter:blur(18px);
+  overflow:hidden;
+  animation:cardFadeUp 1.2s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes cardFadeUp{
+  from{opacity:0;transform:translateY(35px) scale(.98)}
+  to{opacity:1;transform:none}
+}
+
+/* Inner Gold Hairline Frame */
+.card-inner-frame{
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(212,175,55,.22);
+  border-radius:20px;
+  pointer-events:none;
+}
+
+/* Ornate Golden Corner Flourishes (SVG) */
+.corner-flourish{
+  position:absolute;
+  width:52px;
+  height:52px;
+  pointer-events:none;
+  color:var(--gold);
+  opacity:.75;
+}
+.corner-tl{top:16px;left:16px}
+.corner-tr{top:16px;right:16px;transform:scaleX(-1)}
+.corner-bl{bottom:16px;left:16px;transform:scaleY(-1)}
+.corner-br{bottom:16px;right:16px;transform:scale(-1,-1)}
+
+/* Royal Monogram / Wax Seal */
+.monogram-seal{
+  width:72px;
+  height:72px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 35% 30%,rgba(255,242,204,.9),transparent 55%),
+    linear-gradient(135deg,#e6be53,#aa771c 60%,#5a3d0b);
+  border:2px solid #ffd700;
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.6),
+    0 0 30px rgba(212,175,55,.4),
+    inset 0 1px 2px rgba(255,255,255,.8);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+.monogram-seal::before{
+  content:'';
+  position:absolute;
+  inset:4px;
+  border:1px dashed rgba(255,255,255,.6);
+  border-radius:50%;
+}
+.monogram-text{
+  font-family:'Aref Ruqaa Ink',serif;
+  font-size:22px;
+  font-weight:700;
+  color:#2c1b04;
+  text-shadow:0 1px 0 rgba(255,255,255,.4);
+  line-height:1;
+}
+
+/* Wedding Tag */
+.wedding-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Cairo',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.2em;
+  color:var(--gold-glow);
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+.wedding-tag::before,.wedding-tag::after{
+  content:'';
+  width:24px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+}
+.wedding-tag::before{transform:scaleX(-1)}
+
+/* Bismillah */
+.card-bismillah{
+  font-family:'Scheherazade New',serif;
+  font-size:clamp(30px,5vw,46px);
+  line-height:1.4;
+  margin-bottom:10px;
+  background:var(--gold-grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 14px rgba(212,175,55,.35));
+}
+
+/* Quranic Verse */
+.card-ayah{
+  font-family:'Amiri',serif;
+  font-style:italic;
+  font-size:clamp(14px,2.2vw,17px);
+  color:var(--ink-dim);
+  line-height:2;
+  max-width:440px;
+  margin:0 auto 28px;
+  position:relative;
+}
+.card-ayah small{
+  display:block;
+  font-size:11px;
+  color:var(--ink-muted);
+  font-style:normal;
+  font-family:'Cairo',sans-serif;
+  margin-top:4px;
+}
+
+/* Ornate Center Divider */
+.ornate-divider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  margin:0 auto 26px;
+  max-width:280px;
+}
+.ornate-line{
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.6),transparent);
+}
+.ornate-gem{
+  color:var(--gold);
+  font-size:16px;
+  text-shadow:0 0 10px rgba(212,175,55,.6);
+}
+
+/* Couple Names */
+.card-names{
+  font-family:'Aref Ruqaa Ink',serif;
+  font-size:clamp(52px,11vw,92px);
+  line-height:1.1;
+  margin-bottom:12px;
+  background:var(--gold-grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 4px 28px rgba(212,175,55,.4));
+  letter-spacing:.02em;
+}
+.card-names .sep{
+  color:var(--gold);
+  font-size:.65em;
+  vertical-align:middle;
+  padding:0 8px;
+  opacity:.9;
+  filter:none;
+}
+
+/* Subtitle */
+.card-subtitle{
+  font-family:'El Messiri',serif;
+  font-size:clamp(16px,2.8vw,22px);
+  color:var(--gold-light);
+  margin-bottom:26px;
+  letter-spacing:.06em;
+  opacity:.9;
+}
+
+/* Date Pill Ribbon */
+.card-date-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(135deg,rgba(212,175,55,.16),rgba(212,175,55,.06));
+  border:1px solid rgba(212,175,55,.4);
+  border-radius:999px;
+  padding:10px 24px;
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(13px,2vw,15px);
+  font-weight:600;
+  color:var(--gold-light);
+  box-shadow:0 4px 16px rgba(0,0,0,.35);
+  margin-bottom:34px;
+}
+.card-date-badge .icon{font-size:16px}
+
+/* CTA: Scroll down button */
+.card-scroll-btn{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  cursor:pointer;
+  transition:all .3s;
+}
+.card-scroll-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(135deg,rgba(212,175,55,.3),rgba(212,175,55,.12));
+  color:var(--gold-light);
+  border:1px solid rgba(212,175,55,.55);
+  border-radius:999px;
+  padding:12px 28px;
+  font-family:'Cairo',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);
+  transition:all .3s ease;
+}
+.card-scroll-btn:hover .card-scroll-pill{
+  background:linear-gradient(135deg,rgba(212,175,55,.5),rgba(212,175,55,.25));
+  border-color:var(--gold-glow);
+  transform:translateY(-2px);
+  box-shadow:0 12px 35px rgba(212,175,55,.3);
+}
+.card-scroll-arrow{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid rgba(212,175,55,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  font-size:15px;
+  animation:bounce 2s infinite ease-in-out;
+}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* ═══════════════════════════════════════════
+   SECTION 2 — 3D ROOM (FULL INTERACTIVE)
+═══════════════════════════════════════════ */
+#s2{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  background:#04201e;
+  padding:60px 0 40px;
+}
+.sec-header{text-align:center;padding:0 24px 28px;position:relative;z-index:2}
+.sec-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Cairo',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.sec-title{
+  font-family:'Aref Ruqaa Ink',serif;
+  font-size:clamp(32px,5vw,50px);
+  color:var(--gold-light);
+  margin-bottom:10px;
+  text-shadow:var(--shadow-gold);
+}
+.sec-desc{
+  font-size:clamp(14px,2vw,16px);
+  color:var(--ink-dim);
+  line-height:1.8;
+  max-width:540px;
+  margin:0 auto;
+}
+
+#room-wrap{
+  position:relative;
+  width:100%;
+  height:80svh;
+  min-height:580px;
+  max-height:880px;
+  background:#04201e;
+  border-top:1px solid rgba(212,175,55,.2);
+  border-bottom:1px solid rgba(212,175,55,.2);
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  overflow:hidden;
+}
+#roomFrame{
+  width:100%;
+  height:100%;
+  border:none;
+  display:block;
+  background:#04201e;
+}
+
+.s2-footer{
+  display:flex;
+  justify-content:center;
+  padding:26px 24px 0;
+  position:relative;
+  z-index:2;
+}
+.s2-scroll-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Cairo',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  color:var(--gold-light);
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(212,175,55,.35);
+  padding:13px 30px;
+  border-radius:999px;
+  text-decoration:none;
+  transition:all .3s;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+}
+.s2-scroll-btn:hover{
+  background:rgba(212,175,55,.18);
+  border-color:var(--gold-glow);
+  transform:translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════
+   SECTION 3 — INVITATION DETAILS & COUNTDOWN
+═══════════════════════════════════════════ */
+#s3{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:90px 20px 80px;
+  overflow:hidden;
+}
+.s3-card{
+  position:relative;
+  width:100%;
+  max-width:680px;
+  background:
+    radial-gradient(circle 420px at 50% 0%,rgba(35,84,68,.35),transparent 75%),
+    linear-gradient(170deg,rgba(11,36,28,.92) 0%,rgba(5,19,15,.96) 100%);
+  border:1.5px solid rgba(212,175,55,.45);
+  border-radius:28px;
+  padding:clamp(40px,7vw,64px) clamp(24px,6vw,52px);
+  box-shadow:0 35px 90px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.05) inset;
+  backdrop-filter:blur(16px);
+  position:relative;
+  overflow:hidden;
+}
+
+.inv-honor{
+  font-family:'Amiri',serif;
+  font-size:clamp(16px,2.5vw,20px);
+  color:var(--ink-dim);
+  line-height:2;
+  margin-bottom:28px;
+}
+.inv-names-lg{
+  font-family:'Aref Ruqaa Ink',serif;
+  font-size:clamp(42px,8vw,78px);
+  line-height:1.1;
+  background:var(--gold-grad);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 20px rgba(212,175,55,.35));
+  margin-bottom:30px;
+}
+
+/* Countdown */
+#countdown{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:28px 0}
+.cd-unit{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(212,175,55,.25);
+  border-radius:18px;
+  padding:16px 20px;
+  min-width:76px;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.cd-num{
+  font-family:'Cairo',sans-serif;
+  font-size:clamp(28px,5vw,42px);
+  font-weight:700;
+  color:var(--gold-light);
+  line-height:1;
+}
+.cd-label{
+  font-family:'Cairo',sans-serif;
+  font-size:11px;
+  color:var(--ink-muted);
+  margin-top:6px;
+  font-weight:600;
+}
+
+/* Event Info */
+.event-info-grid{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.event-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 20px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(212,175,55,.15);
+  border-radius:16px;
+  text-align:right;
+}
+.event-icon{
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  background:rgba(212,175,55,.12);
+  border:1px solid rgba(212,175,55,.3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  flex-shrink:0;
+}
+.event-details{flex:1}
+.event-details .title{font-family:'Cairo',sans-serif;font-size:12px;color:var(--ink-muted);margin-bottom:2px}
+.event-details .val{font-family:'El Messiri',serif;font-size:clamp(15px,2.5vw,18px);color:var(--ink)}
+
+/* RSVP Buttons */
+.inv-actions{margin-top:34px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.action-btn{
+  font-family:'Cairo',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  padding:14px 36px;
+  border-radius:999px;
+  cursor:pointer;
+  transition:all .3s;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+.btn-gold{
+  background:linear-gradient(135deg,rgba(212,175,55,.4),rgba(212,175,55,.15));
+  color:var(--gold-light);
+  border:1px solid rgba(212,175,55,.6);
+  box-shadow:0 8px 25px rgba(0,0,0,.4);
+}
+.btn-gold:hover{
+  background:linear-gradient(135deg,rgba(212,175,55,.6),rgba(212,175,55,.3));
+  border-color:var(--gold-glow);
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(212,175,55,.25);
+}
+.btn-ghost{
+  background:rgba(255,255,255,.06);
+  color:var(--ink);
+  border:1px solid rgba(255,255,255,.15);
+}
+.btn-ghost:hover{
+  background:rgba(255,255,255,.12);
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+
+/* Footer */
+#footer{
+  text-align:center;
+  padding:36px 24px;
+  border-top:1px solid rgba(212,175,55,.12);
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  color:var(--ink-muted);
+}
+#footer a{color:var(--gold);text-decoration:none}
+
+/* Floating Edit Button */
+#editFloat{
+  position:fixed;
+  bottom:24px;
+  left:24px;
+  z-index:900;
+  font-family:'Cairo',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  background:rgba(3,13,10,.92);
+  color:var(--gold-light);
+  border:1px solid rgba(212,175,55,.45);
+  border-radius:999px;
+  padding:11px 22px;
+  cursor:pointer;
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 30px rgba(0,0,0,.6);
+  transition:all .3s;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+}
+#editFloat:hover{
+  background:rgba(212,175,55,.25);
+  border-color:var(--gold-glow);
+  transform:translateY(-2px);
+}
+
+/* Mobile responsive */
+@media(max-width:600px){
+  #nav{padding:12px 18px}
+  .nav-links .nav-link:not(.nav-btn){display:none}
+  #musicToggle{top:12px;right:14px;padding:7px 14px;font-size:11px}
+  .invitation-card,.s3-card{padding:34px 20px 30px}
+  #room-wrap{height:70svh;min-height:480px}
+  .card-names{font-size:clamp(44px,12vw,68px)}
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div id="prog"><div id="prog-bar"></div></div>
+
+<!-- Music Player Button (ChungDoi style) -->
+<button id="musicToggle" onclick="toggleAudio()" title="تشغيل / إيقاف الموسيقى">
+  <div class="music-bars" id="musicBars">
+    <div class="music-bar"></div>
+    <div class="music-bar"></div>
+    <div class="music-bar"></div>
+  </div>
+  <span id="musicText">موسيقى هادئة</span>
+</button>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <span>💍</span> منصة سوة
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html#templates">القوالب</a>
+    <a class="nav-link nav-btn" href="ring_gallery_window_lighting.html" target="_blank">✏️ محرر 3D المتقدم</a>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     SECTION 1 — LUXURY WEDDING INVITATION COVER
+══════════════════════════════════════════ -->
+<section id="s1">
+  <div class="invitation-card">
+    <div class="card-inner-frame"></div>
+
+    <!-- 4 Ornate Golden Corner Flourishes (SVG) -->
+    <svg class="corner-flourish corner-tl" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+      <path d="M10 90 V25 C10 16 16 10 25 10 H90" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M22 80 V32 C22 26 26 22 32 22 H80" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="25" cy="25" r="4" fill="currentColor"/>
+      <path d="M25 10 C35 15 45 25 50 40 C45 35 35 30 25 30" fill="currentColor" opacity="0.4"/>
+    </svg>
+    <svg class="corner-flourish corner-tr" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+      <path d="M10 90 V25 C10 16 16 10 25 10 H90" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M22 80 V32 C22 26 26 22 32 22 H80" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="25" cy="25" r="4" fill="currentColor"/>
+      <path d="M25 10 C35 15 45 25 50 40 C45 35 35 30 25 30" fill="currentColor" opacity="0.4"/>
+    </svg>
+    <svg class="corner-flourish corner-bl" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+      <path d="M10 90 V25 C10 16 16 10 25 10 H90" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M22 80 V32 C22 26 26 22 32 22 H80" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="25" cy="25" r="4" fill="currentColor"/>
+      <path d="M25 10 C35 15 45 25 50 40 C45 35 35 30 25 30" fill="currentColor" opacity="0.4"/>
+    </svg>
+    <svg class="corner-flourish corner-br" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+      <path d="M10 90 V25 C10 16 16 10 25 10 H90" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M22 80 V32 C22 26 26 22 32 22 H80" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="25" cy="25" r="4" fill="currentColor"/>
+      <path d="M25 10 C35 15 45 25 50 40 C45 35 35 30 25 30" fill="currentColor" opacity="0.4"/>
+    </svg>
+
+    <!-- Royal Monogram Seal -->
+    <div class="monogram-seal">
+      <span class="monogram-text">أ ❖ س</span>
+    </div>
+
+    <!-- Wedding Tag -->
+    <div class="wedding-tag">دعوة زفاف فاخرة</div>
+
+    <!-- Bismillah -->
+    <h1 class="card-bismillah">بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيمِ</h1>
+
+    <!-- Quranic Verse -->
+    <p class="card-ayah">
+      ﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾
+      <small>— سورة الروم، الآية ٢١</small>
+    </p>
+
+    <!-- Center Divider -->
+    <div class="ornate-divider">
+      <div class="ornate-line"></div>
+      <div class="ornate-gem">❖</div>
+      <div class="ornate-line"></div>
+    </div>
+
+    <!-- Couple Names in Majestic Calligraphy -->
+    <div class="card-names">
+      أحمد<span class="sep">❖</span>سارة
+    </div>
+    <p class="card-subtitle">حفل الزفاف المبارك</p>
+
+    <!-- Date Ribbon -->
+    <div class="card-date-badge">
+      <span class="icon">📅</span>
+      <span>السبت ١٨ يونيو ٢٠٢٥ م &nbsp;|&nbsp; ٢٠ ذو الحجة ١٤٤٦ هـ</span>
+    </div>
+
+    <!-- Scroll down CTA -->
+    <div>
+      <a class="card-scroll-btn" href="#s2">
+        <span class="card-scroll-pill">
+          <span>🎁 اكتشف صندوق الخاتم والمفاجأة</span>
+        </span>
+        <div class="card-scroll-arrow">↓</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2 — 3D ROOM (الغرفة ثلاثية الأبعاد)
+══════════════════════════════════════════ -->
+<section id="s2">
+  <div class="sec-header">
+    <div class="sec-tag">غرفة الخطوبة التفاعلية 3D</div>
+    <h2 class="sec-title">افتح الصندوق واكتشف اللحظة 💍</h2>
+    <p class="sec-desc">
+      حرّك الشاشة في جميع الاتجاهات، واضغط على صندوق الخاتم لتجربة فتح الصندوق الواقعية
+    </p>
+  </div>
+
+  <!-- Embedded Full 3D Room from ring_gallery_window_lighting.html -->
+  <div id="room-wrap">
+    <iframe id="roomFrame" src="ring_gallery_window_lighting.html#page=2&embed=1" title="غرفة الخطوبة والبوكس ثلاثي الأبعاد" allow="autoplay"></iframe>
+  </div>
+
+  <div class="s2-footer">
+    <a href="#s3" class="s2-scroll-btn">
+      <span>متابعة تفاصيل موعد ومكان الحفل</span>
+      <span>↓</span>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3 — INVITATION DETAILS & COUNTDOWN
+══════════════════════════════════════════ -->
+<section id="s3">
+  <div class="s3-card">
+    <div class="card-inner-frame"></div>
+
+    <div class="wedding-tag" style="margin-bottom:14px">بطاقة الدعوة الرسمية</div>
+    <div style="font-size:26px;color:var(--gold);margin-bottom:18px">❦</div>
+
+    <p class="inv-honor">
+      بقلوب ملؤها المحبة والسرور، يتشرف<br>
+      <strong style="color:var(--gold-light);font-size:1.15em">عائلة الحاج محمد الأحمدي</strong><br>
+      و<br>
+      <strong style="color:var(--gold-light);font-size:1.15em">عائلة الحاج عبد الله الكريمي</strong><br>
+      بدعوتكم الكريمة لمشاركتنا الفرحة بحفل زفاف نجليهما
+    </p>
+
+    <div class="inv-names-lg">
+      أحمد<span style="font-size:.6em;padding:0 8px;color:var(--gold)">❖</span>سارة
+    </div>
+
+    <!-- Live Countdown -->
+    <div id="countdown">
+      <div class="cd-unit"><div class="cd-num" id="cd-d">00</div><div class="cd-label">يوم</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-h">00</div><div class="cd-label">ساعة</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-m">00</div><div class="cd-label">دقيقة</div></div>
+      <div class="cd-unit"><div class="cd-num" id="cd-s">00</div><div class="cd-label">ثانية</div></div>
+    </div>
+
+    <!-- Event info -->
+    <div class="event-info-grid">
+      <div class="event-row">
+        <div class="event-icon">📅</div>
+        <div class="event-details">
+          <div class="title">اليوم والتاريخ</div>
+          <div class="val">السبت ١٨ يونيو ٢٠٢٥ م (٢٠ ذو الحجة ١٤٤٦ هـ)</div>
+        </div>
+      </div>
+      <div class="event-row">
+        <div class="event-icon">🕗</div>
+        <div class="event-details">
+          <div class="title">توقيت الحفل</div>
+          <div class="val">مساءً من الساعة ٧:٠٠ حتى ١١:٠٠</div>
+        </div>
+      </div>
+      <div class="event-row">
+        <div class="event-icon">📍</div>
+        <div class="event-details">
+          <div class="title">مكان الحفل</div>
+          <div class="val">قاعة الأفراح الذهبية الكبرى — طريق الملك فهد، الرياض</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="inv-actions">
+      <a class="action-btn btn-gold" href="ring_gallery_window_lighting.html" target="_blank">
+        ✏️ تعديل وتخصيص القالب
+      </a>
+      <button class="action-btn btn-ghost" onclick="shareInvite()">
+        📤 مشاركة الدعوة
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer id="footer">
+  <p>صُمِّمت بفخامة عبر <a href="index.html">منصة سوة</a> &nbsp;|&nbsp; منصة الدعوات الإلكترونية الذكية</p>
+</footer>
+
+<!-- Floating Edit Button -->
+<a id="editFloat" href="ring_gallery_window_lighting.html" target="_blank">✏️ تعديل الدعوة</a>
+
+<!-- Background Audio element (synthesized pleasant soft chime for demo) -->
+<audio id="bgAudio" loop preload="none">
+  <source src="https://cdn.pixabay.com/download/audio/2022/05/16/audio_c97a8e7b99.mp3?filename=soft-piano-112621.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
+<script>
+/* ─── Scroll Progress & Nav ─── */
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  const p=h>0?(window.scrollY/h)*100:0;
+  document.getElementById('prog-bar').style.width=p+'%';
+  document.getElementById('nav').classList.toggle('opaque',window.scrollY>50);
+});
+
+/* ─── Countdown ─── */
+function updateCountdown(){
+  const target=new Date('2025-06-18T19:00:00');
+  const now=new Date();
+  let diff=Math.max(0,target-now);
+  const d=Math.floor(diff/864e5); diff%=864e5;
+  const h=Math.floor(diff/36e5); diff%=36e5;
+  const m=Math.floor(diff/6e4); diff%=6e4;
+  const s=Math.floor(diff/1e3);
+  const f=n=>String(n).padStart(2,'0');
+  document.getElementById('cd-d').textContent=d;
+  document.getElementById('cd-h').textContent=f(h);
+  document.getElementById('cd-m').textContent=f(m);
+  document.getElementById('cd-s').textContent=f(s);
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+/* ─── Music Toggle ─── */
+var isPlaying=false;
+function toggleAudio(){
+  const audio=document.getElementById('bgAudio');
+  const bars=document.getElementById('musicBars');
+  const text=document.getElementById('musicText');
+  if(!isPlaying){
+    audio.play().then(()=>{
+      isPlaying=true;
+      bars.classList.remove('paused');
+      text.textContent='إيقاف الموسيقى';
+    }).catch(()=>{
+      // Audio autoplay restrictions
+      isPlaying=true;
+      bars.classList.remove('paused');
+      text.textContent='موسيقى مفعّلة';
+    });
+  } else {
+    audio.pause();
+    isPlaying=false;
+    bars.classList.add('paused');
+    text.textContent='موسيقى هادئة';
+  }
+}
+document.getElementById('musicBars').classList.add('paused');
+
+/* ─── Share ─── */
+function shareInvite(){
+  if(navigator.share){
+    navigator.share({title:'دعوة زفاف أحمد ❖ سارة',text:'يتشرف بدعوتكم لحضور حفل الزفاف السعيد',url:location.href});
+  } else {
+    navigator.clipboard.writeText(location.href).then(()=>alert('تم نسخ رابط الدعوة بنجاح ✓'));
+  }
+}
+</script>
+
+</body>
+</html>
